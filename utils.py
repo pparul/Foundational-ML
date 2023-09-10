@@ -6,24 +6,8 @@ from autograd import numpy as np
 from autograd import value_and_grad 
 import matplotlib.pyplot as plt
 
-### Multi-class classification problem
 
-def create_dataset(n_samples, centers, n_features, cluster_std, random_state):
-
-	# generate n-d classification dataset
-	X, y = make_blobs(n_samples=n_samples, centers=centers, n_features=n_features, cluster_std=cluster_std, 
-		   random_state=random_state)
-	
-	# one hot encode output variable
-	y = to_categorical(y)
-	
-	# split into train and test
-	n_train = n_samples*0.8
-	trainX, testX = X[:n_train, :], X[n_train:, :]
-	trainy, testy = y[:n_train], y[n_train:]
-	return trainX, trainy, testX, testy
-
-
+## Adapted from 
 
 def gen_plot_varaiables(weight_1,weight_2, g):
     # run gradient descent on mesh grid
@@ -45,7 +29,7 @@ def plot_contour_plots(w1_vals, w2_vals, weight_history, func_vals, alpha_choice
     
     for j in range(len(weight_history)):
         w_val = weight_history[j] # the results from Gradient descent and starting from an initial value 
-        plt.scatter(w_val[0], w_val[1], linestyle='--', marker='o', s=50, c='r')
+        plt.scatter(w_val[0], w_val[1],  marker='o', s=50, c='r')
     
         if j > 0:
                     pt1 = weight_history[j-1]
@@ -57,7 +41,7 @@ def plot_contour_plots(w1_vals, w2_vals, weight_history, func_vals, alpha_choice
                     alpha = (head_length - 0.35)/pt_length + 1
                     
                     # if points are different draw error
-                    if np.linalg.norm(pt1 - pt2) > head_length: #and arrows == True:
+                    if np.linalg.norm(pt1 - pt2) > head_length:
                         if np.ndim(pt1) > 1:
                             pt1 = pt1.flatten()
                             pt2 = pt2.flatten()
@@ -65,7 +49,7 @@ def plot_contour_plots(w1_vals, w2_vals, weight_history, func_vals, alpha_choice
                         # draw color connectors for visualization
                         w_old = pt1
                         w_new = pt2
-                        plt.arrow(w_old[0],w_old[1],w_new[0]-w_old[0],w_new[1]-w_old[1],length_includes_head=True,head_width=0.09, head_length=0.05)
+                        plt.arrow(w_old[0],w_old[1],w_new[0]-w_old[0],w_new[1]-w_old[1],length_includes_head=True,head_width=0.05, head_length=0.01)
 
 
 
@@ -83,7 +67,7 @@ def gradient_descent(g,alpha_choice,max_its,w):
         else:
             alpha = alpha_choice
         
-        # evaluate the gradient, store current weights and cost function value
+        # returns gradient dJ/dw and cost function J evaluated at current w
         cost_eval,grad_eval = gradient(w)
         weight_history.append(w)
         cost_history.append(cost_eval)
@@ -99,3 +83,32 @@ def gradient_descent(g,alpha_choice,max_its,w):
     cost_history.append(g(w))  
     return weight_history,cost_history
 
+
+
+def momentum(g,alpha_choice,max_its,w, beta):
+    gradient = value_and_grad(g)
+    weight_history = []      
+    cost_history = []        
+    alpha = 0
+
+    h = np.zeros((np.shape(w)))
+    for k in range(1,max_its+1):
+        # check if diminishing steplength rule used
+        if alpha_choice == 'diminishing':
+            alpha = 1/float(k)
+        else:
+            alpha = alpha_choice
+        
+        cost_eval,grad_eval = gradient(w)
+        weight_history.append(w)
+        cost_history.append(cost_eval)
+
+        #print(grad_eval)
+        h = beta*h + (1-beta)*grad_eval
+        w = w - alpha*h
+        #print(w)
+
+    # collect final weights
+    weight_history.append(w)
+    cost_history.append(g(w))  
+    return weight_history,cost_history
