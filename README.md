@@ -1,4 +1,8 @@
-# Impact of various parameters on behavior of gradient descent algorithm
+# Understanding behavior of various parameters of gradient descent algorithm
+- I use AutoGrad Library [https://github.com/HIPS/autograd] to implement Gradient Descent
+- The goal here is to study how:
+    - Gradient Descent behaves when certain parameters are varied. Focus is on # of iterations and learning rate.
+    - How to use Momentum to optimize or speed-up Gradient Descent.
 
 #### Data
 - x and y axis show the weights and contour surface shows the value of cost function.
@@ -103,13 +107,9 @@
 
 ## Plotting cost function
 
-    (100, 2)
-    (100,)
-
-
 
     
-![png](Gradient_Descent_files/Gradient_Descent_11_1.png)
+![png](Gradient_Descent_files/Gradient_Descent_11_0.png)
     
 
 
@@ -118,7 +118,7 @@
 
 
 
-    <matplotlib.colorbar.Colorbar at 0x16828d900>
+    <matplotlib.colorbar.Colorbar at 0x15d635360>
 
 
 
