@@ -24,7 +24,8 @@ def gen_plot_varaiables(weight_1,weight_2, g):
 
 def plot_contour_plots(w1_vals, w2_vals, weight_history, func_vals, alpha_choice):    
     plt.figure(figsize = (8,3))
-    plt.contour(w1_vals, w2_vals, func_vals)
+    plt.contourf(w1_vals, w2_vals, func_vals)
+    plt.colorbar()
     plt.title(f'learning rate: {alpha_choice}')
     
     for j in range(len(weight_history)):
@@ -51,7 +52,7 @@ def plot_contour_plots(w1_vals, w2_vals, weight_history, func_vals, alpha_choice
                         w_new = pt2
                         plt.arrow(w_old[0],w_old[1],w_new[0]-w_old[0],w_new[1]-w_old[1],length_includes_head=True,head_width=0.05, head_length=0.01)
 
-
+    
 
 def gradient_descent(g,alpha_choice,max_its,w):
     gradient = value_and_grad(g)
