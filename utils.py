@@ -9,6 +9,15 @@ import matplotlib.pyplot as plt
 
 ## Adapted from 
 
+### PYTEST FUNCTIONS ####
+
+def square(x: float) -> float:
+    return x * x
+    #pass
+
+
+
+
 def gen_plot_varaiables(weight_1,weight_2, g):
     # run gradient descent on mesh grid
     w1_vals, w2_vals = np.meshgrid(weight_1,weight_2)
@@ -113,3 +122,5 @@ def momentum(g,alpha_choice,max_its,w, beta):
     weight_history.append(w)
     cost_history.append(g(w))  
     return weight_history,cost_history
+
+
